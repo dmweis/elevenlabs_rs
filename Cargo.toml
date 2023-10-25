@@ -16,7 +16,7 @@ async-native-tls = {version = "0.5.0", default-features = false, features = [
 bytes = "1.4.0"
 chrono = "0.4.26"
 comparable = {version = "0.5.4", features = ["derive"]}
-futures-util = "0.3.28"
+futures-util = "0.3"
 http-body = "1.0.0-rc.2"
 http-body-util = "0.1.0-rc.3"
 hyper = {version = "1.0.0-rc.4", features = ["full"]}
