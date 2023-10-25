@@ -100,6 +100,17 @@ impl Speech {
     ///}
     /// ```
     pub async fn new(text: &str, voice_name: &str, model: &str, latency: u32) -> Result<Self> {
+        let cb = ClientBuilder::new()?;
+        Self::with_client_builder(text, voice_name, model, latency, cb).await
+    }
+
+    pub async fn with_client_builder(
+        text: &str,
+        voice_name: &str,
+        model: &str,
+        latency: u32,
+        cb: ClientBuilder,
+    ) -> Result<Self> {
         if latency > 22 {
             return Err(Box::new(Error::SpeechGenerationError(
                 "Latency value must be between 0 and 22".to_string(),
@@ -107,7 +118,6 @@ impl Speech {
         }
         let voice = Voice::with_settings(voice_name).await?;
 
-        let cb = ClientBuilder::new()?;
         let c = cb
             .method(POST)?
             .path(format!(
@@ -173,6 +183,10 @@ impl Speech {
         };
         save(&filename, self.audio.clone())?;
         Ok(())
+    }
+
+    pub fn audio(&self) -> Bytes {
+        self.audio.clone()
     }
 }
 

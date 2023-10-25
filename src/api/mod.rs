@@ -114,6 +114,12 @@ impl ClientBuilder {
         Ok(cb)
     }
 
+    pub fn with_api_key(api_key: &str) -> Result<Self> {
+        let mut cb = ClientBuilder::default();
+        cb = cb.header(XI_API_KEY_HEADER, api_key)?;
+        Ok(cb)
+    }
+
     pub fn path(mut self, path: impl Into<String>) -> Result<Self> {
         let url = format!("{}{}{}", BASE_URL, V1_PATH, path.into()).parse::<Uri>()?;
         self.url = Some(url);
