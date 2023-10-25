@@ -46,7 +46,7 @@ mod tests {
 
         assert_eq!(&history_item.text, "test");
 
-        let _ = delete_history_item(&history_item.history_item_id)
+        delete_history_item(&history_item.history_item_id)
             .await
             .unwrap();
 
@@ -162,7 +162,7 @@ impl HistoryItem {
             Some(f) => f,
             None => {
                 let mut filename = self.voice_name.clone();
-                filename.push_str("_");
+                filename.push('_');
                 filename.push_str(&self.date_unix.to_string());
                 filename.push_str(".mp3");
                 filename

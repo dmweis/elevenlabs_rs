@@ -80,7 +80,7 @@ impl Voices {
     pub fn by_name(&self, name: &str) -> Result<&Voice> {
         self.voices
             .iter()
-            .find(|v| v.name == name.to_string())
+            .find(|v| v.name == *name)
             .ok_or(Box::new(Error::VoiceNotFound))
     }
     pub async fn get_voice_with_settings(&self, voice_name: &str) -> Result<Voice> {
@@ -151,7 +151,7 @@ impl Voice {
         let mut voice_clone_builder = VoiceCloneBuilder::new()
             .name(name.unwrap_or(&self.name))
             .description(
-                description.unwrap_or(&self.description.as_ref().unwrap_or(&"".to_string())),
+                description.unwrap_or(self.description.as_ref().unwrap_or(&"".to_string())),
             );
 
         if let Some(labels) = labels {
@@ -199,7 +199,7 @@ impl Voice {
             return Err(Box::new(Error::ClientSendRequestError(json)));
         }
 
-        Ok(get_voice(&self.voice_id, true).await?)
+        get_voice(&self.voice_id, true).await
     }
 
     pub async fn with_settings(voice_name: &str) -> Result<Self> {
@@ -329,9 +329,9 @@ impl VoiceClone {
         let json = serde_json::from_slice::<serde_json::Value>(&resp)?;
 
         if let Some(voice_id) = json["voice_id"].as_str() {
-            return Ok(get_voice(voice_id, true).await?);
+            get_voice(voice_id, true).await
         } else {
-            return Err(Box::new(Error::ClientSendRequestError(json)));
+            Err(Box::new(Error::ClientSendRequestError(json)))
         }
     }
 

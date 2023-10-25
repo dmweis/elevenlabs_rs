@@ -158,7 +158,7 @@ impl Speech {
         latency: u32,
     ) -> Result<Self> {
         let text = std::fs::read_to_string(path)?;
-        Ok(Self::new(&text, voice_name, model, latency).await?)
+        Self::new(&text, voice_name, model, latency).await
     }
 
     pub fn play(&self) -> Result<()> {
